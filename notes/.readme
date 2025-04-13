@@ -1,0 +1,57 @@
+
+// 🔹 What Happens Internally?
+// 1️⃣ Client sends JSON data in the request body.
+// 2️⃣ express.json() middleware reads and parses the JSON.
+// 3️⃣ It converts JSON into a JavaScript object and attaches it to req.body.
+// 4️⃣ Now, you can access req.body in your route handlers.
+app.use(express.json());
+
+// 🔹 Alternative: express.urlencoded()
+// If you're working with form data (like HTML forms), use:
+
+// js
+// Copy
+// Edit
+// app.use(express.urlencoded({ extended: true }));
+// This will allow Express to parse application/x-www-form-urlencoded data.
+
+
+//route define
+//rest api 
+app.use("/api/auth",router)
+
+
+
+//secure password with brcypt
+
+const pre=require("../server/models/user.model")
+//middleware 
+//runs before .create method
+userSchema.pre("save",async function (next) {
+    const user = this;
+    if(!user.isModified("password")){
+        next();
+    }
+
+    try {
+        const saltRound =await bcrypt.genSalt(10)
+        const hash_password = await bcrypt.hash(user.password, saltRound);
+        user.password=hash_password;
+
+    } catch (error) {
+        next(error)
+    }
+})
+
+//JWT TOKENs
+// Authenticaton => verify user
+// authorization => functions after verifications
+
+// not to store this in db always keep it on browser side 
+// in form of cookies / localStorage
+
+in usermodel
+instance method
+
+userSchema.methods can create methods and use anywhere in controolers
+userSchema.methods.generatetokens=
